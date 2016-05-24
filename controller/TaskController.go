@@ -13,7 +13,7 @@ func GetAllTaskHandler(rw http.ResponseWriter, req *http.Request, ren *render.Re
 	var tasks 				[]model.Task
 	var err 				error
 
-	tasks,err = GetAllTaskFromDb()
+	tasks,err = SelectAllTaskFromDb()
 	if err != nil {
 		panic(err)
 	}
@@ -23,7 +23,7 @@ func GetAllTaskHandler(rw http.ResponseWriter, req *http.Request, ren *render.Re
 	ren.JSON(rw,http.StatusOK,getAllTasksResponse)
 }
 
-func GetAllTaskFromDb() ([]model.Task, error) {
+func SelectAllTaskFromDb() ([]model.Task, error) {
 
 	var tasks []model.Task
 
