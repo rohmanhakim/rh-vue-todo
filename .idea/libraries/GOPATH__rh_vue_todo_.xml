@@ -1,0 +1,52 @@
+<component name="libraryTable">
+  <library name="GOPATH &lt;rh-vue-todo&gt;">
+    <CLASSES>
+      <root url="file://$USER_HOME$/go/src/GokilatAlgorithm.go" />
+      <root url="file://$USER_HOME$/go/src/beechat" />
+      <root url="file://$USER_HOME$/go/src/fileserver" />
+      <root url="file://$USER_HOME$/go/src/github.com" />
+      <root url="file://$USER_HOME$/go/src/.DS_Store" />
+      <root url="file://$USER_HOME$/go/src/beego-guestbook" />
+      <root url="file://$USER_HOME$/go/src/goboarding" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+    <excluded>
+      <root url="file://$USER_HOME$/go/src/github.com/beego/redigo/.git" />
+      <root url="file://$USER_HOME$/go/src/github.com/gorilla/mux/.git" />
+      <root url="file://$USER_HOME$/go/src/github.com/russross/blackfriday/testdata" />
+      <root url="file://$USER_HOME$/go/src/goboarding/.git" />
+      <root url="file://$USER_HOME$/go/src/github.com/russross/blackfriday/.git" />
+      <root url="file://$USER_HOME$/go/src/github.com/howeyc/fsnotify/.git" />
+      <root url="file://$USER_HOME$/go/src/github.com/satori/go.uuid/.git" />
+      <root url="file://$USER_HOME$/go/src/github.com/astaxie/beego/.git" />
+      <root url="file://$USER_HOME$/go/src/github.com/beego/bee/testdata" />
+      <root url="file://$USER_HOME$/go/src/github.com/shurcooL/sanitized_anchor_name/.git" />
+      <root url="file://$USER_HOME$/go/src/github.com/jtolds/gls/.git" />
+      <root url="file://$USER_HOME$/go/src/github.com/go-sql-driver/mysql/.git" />
+      <root url="file://$USER_HOME$/go/src/github.com/gorilla/context/.git" />
+      <root url="file://$USER_HOME$/go/src/github.com/astaxie/beego/utils/testdata" />
+      <root url="file://$USER_HOME$/go/src/github.com/smartystreets/assertions/.git" />
+      <root url="file://$USER_HOME$/go/src/github.com/codegangsta/negroni/.git" />
+      <root url="file://$USER_HOME$/go/src/github.com/tools/godep/.git" />
+      <root url="file://$USER_HOME$/go/src/github.com/wendal/errors/.git" />
+      <root url="file://$USER_HOME$/go/src/github.com/beego/goyaml2/.git" />
+      <root url="file://$USER_HOME$/go/src/github.com/julienschmidt/httprouter/.git" />
+      <root url="file://$USER_HOME$/go/src/github.com/beego/bee/.git" />
+      <root url="file://$USER_HOME$/go/src/github.com/unrolled/render/.git" />
+      <root url="file://$USER_HOME$/go/src/github.com/tools/godep/Godeps/_workspace" />
+      <root url="file://$PROJECT_DIR$" />
+      <root url="file://$USER_HOME$/go/src/github.com/pubnub/go/.git" />
+      <root url="file://$USER_HOME$/go/src/github.com/smartystreets/goconvey/.git" />
+      <root url="file://$USER_HOME$/go/src/github.com/beego/x2j/.git" />
+      <root url="file://$USER_HOME$/go/src/github.com/mattn/go-sqlite3/_example" />
+      <root url="file://$USER_HOME$/go/src/github.com/lib/pq/.git" />
+      <root url="file://$USER_HOME$/go/src/github.com/rohmanhakim/bidsim/.idea" />
+      <root url="file://$USER_HOME$/go/src/github.com/rohmanhakim/beego-guestbook/Godeps/_workspace" />
+      <root url="file://$USER_HOME$/go/src/github.com/mattn/go-sqlite3/.git" />
+      <root url="file://$USER_HOME$/go/src/github.com/alexjlockwood/gcm/.git" />
+      <root url="file://$USER_HOME$/go/src/github.com/heroku/go-getting-started/Godeps/_workspace" />
+      <root url="file://$USER_HOME$/go/src/beego-guestbook/Godeps/_workspace" />
+    </excluded>
+  </library>
+</component>
