@@ -9,11 +9,11 @@ import (
 	"strconv"
 	"fmt"
 	"github.com/rohmanhakim/rh-vue-todo/helper"
+	"github.com/gorilla/mux"
 )
 
 func GetAllTaskHandler(rw http.ResponseWriter, req *http.Request, ren *render.Render){
 
-	var commonResponse  	model.CommonResponse
 	var getAllTasksResponse model.GetAllTasksResponse
 	var tasks 				[]model.Task
 	var err 				error
@@ -21,7 +21,7 @@ func GetAllTaskHandler(rw http.ResponseWriter, req *http.Request, ren *render.Re
 	tasks,err = SelectAllTaskFromDb()
 	if err != nil {
 		panic(err)
-		helper.RenderErrorResponse(500,commonResponse,rw,ren)
+		helper.RenderErrorResponse(500,rw,ren)
 	}
 
 	getAllTasksResponse.Tasks = tasks
@@ -35,24 +35,40 @@ func PostAddNewTaskHandler(rw http.ResponseWriter, req *http.Request, ren *rende
 	var err 					error
 	var task 					model.Task
 	var postAddNewTaskResponse 	model.PostAddNewTaskResponse
-	var commonResponse 			model.CommonResponse
-	
+
 	err = json.NewDecoder(req.Body).Decode(&task)
 	if err != nil {
 		panic(err)
-		helper.RenderErrorResponse(500,commonResponse,rw,ren)
+		helper.RenderErrorResponse(500,rw,ren)
 	}
 
 	id, err = InsertTaskToDb(task)
 	if err != nil {
 		panic(err)
-		helper.RenderErrorResponse(500,commonResponse,rw,ren)
+		helper.RenderErrorResponse(500,rw,ren)
 	}
 
 	postAddNewTaskResponse.Status = 200
 	postAddNewTaskResponse.Success = true
 	postAddNewTaskResponse.Id = strconv.Itoa(id)
 	ren.JSON(rw,http.StatusOK,postAddNewTaskResponse)
+}
+
+func DeleteTaskHandler(rw http.ResponseWriter, req *http.Request, ren *render.Render){
+
+	var err 			error
+	var id 				string
+
+	vars := mux.Vars(req)
+	id = vars["id"]
+
+	err = DeleteTaskFromDb(id)
+	if err != nil {
+		panic(err)
+		helper.RenderErrorResponse(500,rw,ren)
+	}
+
+	helper.RenderOKResponse(rw,ren)
 }
 
 func SelectAllTaskFromDb() ([]model.Task, error) {
@@ -115,4 +131,26 @@ func InsertTaskToDb(task model.Task) (int,error) {
 		}
 	}
 	return id, nil
+}
+
+func DeleteTaskFromDb(id string) error {
+
+	query := "DELETE FROM task where id = "
+	query += id
+
+	stmt, err := database.GetDb().Prepare(query)
+	if err != nil {
+		panic(err)
+		return err
+	}
+
+	_, err = stmt.Exec()
+	if err != nil {
+		panic(err)
+		return err
+	}
+
+	fmt.Printf("Success inserting new task with id %d\n",id)
+
+	return nil
 }
