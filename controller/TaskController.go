@@ -138,19 +138,22 @@ func DeleteTaskFromDb(id string) error {
 	query := "DELETE FROM task where id = "
 	query += id
 
-	stmt, err := database.GetDb().Prepare(query)
-	if err != nil {
-		panic(err)
-		return err
-	}
+	if database.IsConnectedToDb() {
 
-	_, err = stmt.Exec()
-	if err != nil {
-		panic(err)
-		return err
-	}
+		stmt, err := database.GetDb().Prepare(query)
+		if err != nil {
+			panic(err)
+			return err
+		}
 
-	fmt.Printf("Success inserting new task with id %d\n",id)
+		_, err = stmt.Exec()
+		if err != nil {
+			panic(err)
+			return err
+		}
+
+		fmt.Printf("Success inserting new task with id %d\n", id)
+	}
 
 	return nil
 }
