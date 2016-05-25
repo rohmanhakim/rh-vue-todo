@@ -8,10 +8,12 @@ import (
 	"encoding/json"
 	"strconv"
 	"fmt"
+	"github.com/rohmanhakim/rh-vue-todo/helper"
 )
 
 func GetAllTaskHandler(rw http.ResponseWriter, req *http.Request, ren *render.Render){
 
+	var commonResponse  	model.CommonResponse
 	var getAllTasksResponse model.GetAllTasksResponse
 	var tasks 				[]model.Task
 	var err 				error
@@ -19,6 +21,7 @@ func GetAllTaskHandler(rw http.ResponseWriter, req *http.Request, ren *render.Re
 	tasks,err = SelectAllTaskFromDb()
 	if err != nil {
 		panic(err)
+		helper.RenderErrorResponse(500,commonResponse,rw,ren)
 	}
 
 	getAllTasksResponse.Tasks = tasks
@@ -28,23 +31,27 @@ func GetAllTaskHandler(rw http.ResponseWriter, req *http.Request, ren *render.Re
 
 func PostAddNewTaskHandler(rw http.ResponseWriter, req *http.Request, ren *render.Render){
 
-	var err error
-	var task model.Task
-	var commonResponse model.CommonResponse
+	var id 				int
+	var err 			error
+	var task 			model.Task
+	var commonResponse 	model.CommonResponse
 
 	// Decode the incoming Go-Kilat Bid
 	err = json.NewDecoder(req.Body).Decode(&task)
 	if err != nil {
 		panic(err)
+		helper.RenderErrorResponse(500,commonResponse,rw,ren)
 	}
 
-	err = InsertTaskToDb(task)
+	id, err = InsertTaskToDb(task)
 	if err != nil {
-		commonResponse.Status = 502
-		commonResponse.Success = false
-		ren.JSON(rw,http.StatusInternalServerError,commonResponse)
+		panic(err)
+		helper.RenderErrorResponse(500,commonResponse,rw,ren)
 	}
 
+	commonResponse.Status = 200
+	commonResponse.Success = true
+	commonResponse.Id = strconv.Itoa(id)
 	ren.JSON(rw,http.StatusOK,commonResponse)
 }
 
@@ -81,16 +88,17 @@ func SelectAllTaskFromDb() ([]model.Task, error) {
 	return tasks, nil
 }
 
-func InsertTaskToDb(task model.Task) error {
-	if database.IsConnectedToDb() {
+func InsertTaskToDb(task model.Task) (int,error) {
 
-		var err error
+	var id 	int
+
+	if database.IsConnectedToDb() {
 
 		query := "INSERT INTO task(title,notes) VALUES ("
 		query += "'" + task.Title + "',"
-		query += "'" + task.Notes + "')"
+		query += "'" + task.Notes + "') RETURNING id"
 
-		stmt, err := database.GetDb().Prepare(query)
+		/*stmt, err := database.GetDb().Prepare(query)
 		if err != nil {
 			panic(err)
 			return err
@@ -100,9 +108,23 @@ func InsertTaskToDb(task model.Task) error {
 		if err != nil {
 			panic(err)
 			return err
+		}*/
+
+		row, err := database.GetDb().Query(query)
+		if err != nil {
+			panic(err)
+			return 0, err
 		}
 
-		fmt.Printf("Success inserting new task")
+		for (row.Next()) {
+
+			err := row.Scan(&id)
+			if err != nil {
+				return 0, err
+			}
+
+			fmt.Printf("Success inserting new task with id %d\n",id)
+		}
 	}
-	return nil
+	return id, nil
 }
