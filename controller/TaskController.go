@@ -98,18 +98,6 @@ func InsertTaskToDb(task model.Task) (int,error) {
 		query += "'" + task.Title + "',"
 		query += "'" + task.Notes + "') RETURNING id"
 
-		/*stmt, err := database.GetDb().Prepare(query)
-		if err != nil {
-			panic(err)
-			return err
-		}
-
-		_, err = stmt.Exec()
-		if err != nil {
-			panic(err)
-			return err
-		}*/
-
 		row, err := database.GetDb().Query(query)
 		if err != nil {
 			panic(err)
