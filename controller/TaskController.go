@@ -31,12 +31,12 @@ func GetAllTaskHandler(rw http.ResponseWriter, req *http.Request, ren *render.Re
 
 func PostAddNewTaskHandler(rw http.ResponseWriter, req *http.Request, ren *render.Render){
 
-	var id 				int
-	var err 			error
-	var task 			model.Task
-	var commonResponse 	model.CommonResponse
-
-	// Decode the incoming Go-Kilat Bid
+	var id 						int
+	var err 					error
+	var task 					model.Task
+	var postAddNewTaskResponse 	model.PostAddNewTaskResponse
+	var commonResponse 			model.CommonResponse
+	
 	err = json.NewDecoder(req.Body).Decode(&task)
 	if err != nil {
 		panic(err)
@@ -49,10 +49,10 @@ func PostAddNewTaskHandler(rw http.ResponseWriter, req *http.Request, ren *rende
 		helper.RenderErrorResponse(500,commonResponse,rw,ren)
 	}
 
-	commonResponse.Status = 200
-	commonResponse.Success = true
-	commonResponse.Id = strconv.Itoa(id)
-	ren.JSON(rw,http.StatusOK,commonResponse)
+	postAddNewTaskResponse.Status = 200
+	postAddNewTaskResponse.Success = true
+	postAddNewTaskResponse.Id = strconv.Itoa(id)
+	ren.JSON(rw,http.StatusOK,postAddNewTaskResponse)
 }
 
 func SelectAllTaskFromDb() ([]model.Task, error) {
