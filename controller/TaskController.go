@@ -54,6 +54,32 @@ func PostAddNewTaskHandler(rw http.ResponseWriter, req *http.Request, ren *rende
 	ren.JSON(rw,http.StatusOK,postAddNewTaskResponse)
 }
 
+func PostGetTaskDetails(rw http.ResponseWriter, req *http.Request, ren *render.Render){
+
+	var err 	error
+	var task 	model.Task
+	var id 		int
+
+	vars := mux.Vars(req)
+	id, err = strconv.Atoi(vars["id"])
+	if err != nil {
+		panic(err)
+		helper.RenderErrorResponse(500,rw,ren)
+	}
+
+	task,err = SelectTaskFromDb(id)
+	if err != nil {
+		panic(err)
+		helper.RenderErrorResponse(500,rw,ren)
+	}
+
+	if task.Id == "" {
+		http.NotFound(rw,req)
+	} else {
+		ren.JSON(rw,http.StatusOK,task)
+	}
+}
+
 func DeleteTaskHandler(rw http.ResponseWriter, req *http.Request, ren *render.Render){
 
 	var err 			error
@@ -102,6 +128,43 @@ func SelectAllTaskFromDb() ([]model.Task, error) {
 		}
 	}
 	return tasks, nil
+}
+
+func SelectTaskFromDb(id int) (model.Task, error){
+	
+	var task model.Task
+
+	query := "SELECT * FROM task WHERE id = " + strconv.Itoa(id)
+
+	if database.IsConnectedToDb() {
+
+		row, err := database.GetDb().Query(query)
+		if err != nil {
+			panic(err)
+			return task, err
+		}
+
+		for (row.Next()) {
+
+			var _id 	int
+			var _title 	string
+			var _notes 	string
+
+			err := row.Scan(&_id, &_title, &_notes)
+			if err != nil {
+				panic(err)
+				return task, err
+			}
+
+			task.Id 	= strconv.Itoa(_id)
+			task.Title = _title
+			task.Notes = _notes
+
+		}
+
+	}
+
+	return task, nil
 }
 
 func InsertTaskToDb(task model.Task) (int,error) {
