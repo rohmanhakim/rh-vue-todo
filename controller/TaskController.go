@@ -54,7 +54,7 @@ func PostAddNewTaskHandler(rw http.ResponseWriter, req *http.Request, ren *rende
 	ren.JSON(rw,http.StatusOK,postAddNewTaskResponse)
 }
 
-func PostGetTaskDetails(rw http.ResponseWriter, req *http.Request, ren *render.Render){
+func GetTaskDetailsHandler(rw http.ResponseWriter, req *http.Request, ren *render.Render){
 
 	var err 	error
 	var task 	model.Task
