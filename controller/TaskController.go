@@ -80,6 +80,30 @@ func PostGetTaskDetails(rw http.ResponseWriter, req *http.Request, ren *render.R
 	}
 }
 
+func PutUpdateTaskHandler(rw http.ResponseWriter, req *http.Request, ren *render.Render){
+
+	var err 	error
+	var id		string
+	var task	model.Task
+
+	vars := mux.Vars(req)
+	id = vars["id"]
+
+	err = json.NewDecoder(req.Body).Decode(&task)
+	if err != nil {
+		panic(err)
+		helper.RenderErrorResponse(500,rw,ren)
+	}
+
+	err = UpdateTaskToDb(id,task)
+	if err != nil {
+		panic(err)
+		helper.RenderErrorResponse(500,rw,ren)
+	}
+
+	helper.RenderOKResponse(rw,ren)
+}
+
 func DeleteTaskHandler(rw http.ResponseWriter, req *http.Request, ren *render.Render){
 
 	var err 			error
@@ -131,7 +155,7 @@ func SelectAllTaskFromDb() ([]model.Task, error) {
 }
 
 func SelectTaskFromDb(id int) (model.Task, error){
-	
+
 	var task model.Task
 
 	query := "SELECT * FROM task WHERE id = " + strconv.Itoa(id)
@@ -194,6 +218,34 @@ func InsertTaskToDb(task model.Task) (int,error) {
 		}
 	}
 	return id, nil
+}
+
+func UpdateTaskToDb(id string, task model.Task) error {
+
+//	query := "UPDATE task SET title='kasih makan sarapan si singo', notes='makanannya ada di atas kasur' WHERE id = 3"
+	query := "UPDATE task SET "
+	query += "title = '" + task.Title + "', "
+	query += "notes = '" + task.Notes + "' "
+	query += "WHERE id = " + id
+
+	if database.IsConnectedToDb() {
+
+		stmt, err := database.GetDb().Prepare(query)
+		if err != nil {
+			panic(err)
+			return err
+		}
+
+		_, err = stmt.Exec()
+		if err != nil {
+			panic(err)
+			return err
+		}
+
+		fmt.Printf("Success updating a task with id %s\n", id)
+	}
+
+	return nil
 }
 
 func DeleteTaskFromDb(id string) error {
