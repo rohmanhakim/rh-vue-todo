@@ -22,46 +22,31 @@ new Vue({
         getAllTasks: function() {
 
             this.$http.get('http://localhost:8080/task/all').success(function(tasks) {
-                this.$set('taskContainer', tasks);
+                this.$set('tasksContainer', tasks);
             }).error(function(error) {
                 console.log(error);
             });
-
-            /*var tasks = [
-                {
-                    id: '1',
-                    title: 'TIFF',
-                    notes: 'Toronto International Film Festival'
-                },
-                {
-                    id: '2',
-                    title: 'The Martian Premiere',
-                    notes: 'The Martian comes to theatres.'
-                },
-                {
-                    id: '3',
-                    title: 'SXSW',
-                    notes: 'Music, film and interactive festival in Austin, TX.'
-                }
-            ];*/
-            // $set is a convenience method provided by Vue that is similar to pushing
-            // data onto an array
-            //this.$set('tasks', tasks);
 
         },
 
         // adds an event to the existing events array
         addTask: function(){
-            if(this.task.name) {
-                this.taskContainer.tasks.push(this.task);
-                this.task = { title: '', notes: ''};
+            if(this.task.title) {
+                /*                this.taskContainer.tasks.push(this.task);
+                this.task = { title: '', notes: ''};*/
+                this.$http.post('http://localhost:8080/task', this.task).success(function(response) {
+                  this.tasksContainer.tasks.push(this.task);
+                  console.log("Task added!");
+                }).error(function(error) {
+                  console.log(error);
+                });
             }
         },
 
         deleteTask: function (index) {
             if(confirm("Are you sure you want to delete this task?")){
                 // $remove is a Vue convenience method similar to splice
-                this.taskContainer.tasks.$remove(this.tasks[index]);
+                this.tasksContainer.tasks.$remove(this.tasks[index]);
             }
         }
     }
