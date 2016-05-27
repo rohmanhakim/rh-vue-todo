@@ -1,0 +1,32 @@
+<!doctype html>
+<html xmlns:v-on="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <title>Vue</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="/static/bootstrap/dist/css/bootstrap.min.css">
+</head>
+<body>
+
+<!-- navigation bar -->
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <a class="navbar-brand">
+            <i class="glyphicon glyphicon-bullhorn"></i>
+            Vue Events Bulletin Board
+        </a>
+    </div>
+</nav>
+
+<!-- main body of our application -->
+<div class="container" id="tasks">
+    [[ yield ]]
+</div>
+
+<!-- JS -->
+<script src="/static/vue/dist/vue.js"></script>
+<script src="/static/vue-resource/dist/vue-resource.js"></script>
+<script src="/static/js/app.js"></script>
+</body>
+</html>

@@ -20,9 +20,13 @@ func main(){
 		return
 	}
 
-	ren := render.New()
+	ren := render.New(render.Options{
+		Layout: "layout",
+		Delims: render.Delims{"[[", "]]"},
+	})
 	router := mux.NewRouter().StrictSlash(false)
 	router.PathPrefix("/static/").Handler(http.StripPrefix("/static/", http.FileServer(http.Dir("./static/"))))
+	router.HandleFunc("/",func(w http.ResponseWriter, r *http.Request) {controller.RootHandler(w,r,ren)}).Methods("GET")
 	router.HandleFunc("/task/all",func(w http.ResponseWriter, r *http.Request) {controller.GetAllTaskHandler(w,r,ren)}).Methods("GET")
 	router.HandleFunc("/task",func(w http.ResponseWriter, r *http.Request) {controller.PostAddNewTaskHandler(w,r,ren)}).Methods("POST")
 	router.HandleFunc("/task/{id}",func(w http.ResponseWriter, r *http.Request) {controller.DeleteTaskHandler(w,r,ren)}).Methods("DELETE")
