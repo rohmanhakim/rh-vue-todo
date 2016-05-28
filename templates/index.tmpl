@@ -1,4 +1,7 @@
  <!-- add an task form -->
+ <script src="/static/js/jquery-2.2.4.js"></script>
+<script src="/static/bootstrap/js/collapse.js"></script>
+
     <div class="col-sm-6">
         <div class="panel panel-default">
             <div class="panel-heading">
@@ -15,26 +18,38 @@
                 </div>
 
                 <button class="btn btn-primary" v-on:click="addTask">Submit</button>
-
             </div>
         </div>
     </div>
 
     <!-- show the tasks -->
     <div class="col-sm-6">
-        <div class="list-group">
+        <div id="task-list" class="list-group">
+            <div class="panel" v-for="task in tasksContainer.tasks">
+                <a href="#btn-group-{{ $index }}"  data-parent="#task-list" data-toggle="collapse" aria-expanded="false" aria-controls="btn-group-{{ $index }}">
+                    <h4 class="list-group-item-heading">
+                        {{ task.title }}
+                    </h4>
 
-            <a href="#" class="list-group-item" v-for="task in tasksContainer.tasks">
-                <h4 class="list-group-item-heading">
-                    <i class="glyphicon glyphicon-bullhorn"></i>
-                    {{ task.title }}
-                </h4>
+                    <p class="list-group-item-text" v-if="task.notes">
+                        {{ task.notes }}
+                    </p>
 
-                <p class="list-group-item-text" v-if="task.notes">
-                    {{ task.notes }}
-                </p>
 
-                <button class="btn btn-xs btn-danger" v-on:click="deleteTask($index)">Delete</button>
-            </a>
+                    <!-- <button class="btn btn-xs btn-danger" v-on:click="deleteTask($index)">Delete</button> -->
+                </a>
+                <div class="collapse" id="btn-group-{{ $index }}">
+                    <br>
+                    <button class="btn btn-xs btn-success">
+                        <span class="glyphicon glyphicon-ok"></span> Done
+                    </button>
+                    <button class="btn btn-xs btn-info">
+                        <span class="glyphicon glyphicon-edit"></span> Edit
+                    </button>
+                    <button class="btn btn-xs btn-danger" v-on:click="deleteTask($index)">
+                        <span class="glyphicon glyphicon-trash"></span> Delete
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
