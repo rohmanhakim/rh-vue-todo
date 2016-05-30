@@ -1,5 +1,5 @@
-Vue.component('modal', {
-    template: '#modal-template',
+Vue.component('confirmation-modal', {
+    template: '#confirmation-modal-template',
     props: ['show', 'index','title', 'message','type','callback'],
     events: {
         onShowConfirmationModal: function(index,title,message,type,callback) {
@@ -101,7 +101,7 @@ new Vue({
         showDeleteTaskModal: function (index) {
             //broadcast will send the specified event to all child of this vue's instance
             //here, we pass fouur argument to the receiving child: the index of the task, the modal dialog's message, the type of the modal dialog ("success" for positive, and "danger" for negative), and its callback wich will be listened by this instance's "event" options
-            this.$broadcast('onShowConfirmationModal',index,"Confirm delete","Are you sure want to delete this task?","success",'onConfirmDeleteTask');
+            this.$broadcast('onShowConfirmationModal',index,"Confirm delete","Are you sure want to delete this task?","danger",'onConfirmDeleteTask');
         }
     }
 });
