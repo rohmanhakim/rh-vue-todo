@@ -32,6 +32,7 @@ func main(){
 	router.HandleFunc("/task/{id}",func(w http.ResponseWriter, r *http.Request) {controller.DeleteTaskHandler(w,r,ren)}).Methods("DELETE")
 	router.HandleFunc("/task/{id}",func(w http.ResponseWriter, r *http.Request) {controller.GetTaskDetailsHandler(w,r,ren)}).Methods("GET")
 	router.HandleFunc("/task/{id}",func(w http.ResponseWriter, r *http.Request) {controller.PutUpdateTaskHandler(w,r,ren)}).Methods("PUT")
+	router.HandleFunc("/user/create", func(w http.ResponseWriter, r *http.Request) {controller.PostRegisterNewUser(w,r,ren)}).Methods("POST")
 
 	server := &http.Server{
 		Addr:    ":8080",

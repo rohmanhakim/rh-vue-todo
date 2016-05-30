@@ -36,7 +36,7 @@ func PostRegisterNewUser(rw http.ResponseWriter, req *http.Request, ren *render.
 	ren.JSON(rw,http.StatusOK,response)
 }
 
-func SelectUserFromDb(id int) (model.Task, error){
+func SelectUserFromDb(id int) (model.User, error){
 
 	var user model.User
 
@@ -59,7 +59,7 @@ func SelectUserFromDb(id int) (model.Task, error){
 			err := row.Scan(&_id, &_email, &_password)
 			if err != nil {
 				panic(err)
-				return task, err
+				return user, err
 			}
 
 			user.Id 		= strconv.Itoa(_id)
