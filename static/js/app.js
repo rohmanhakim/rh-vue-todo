@@ -95,9 +95,9 @@ new Vue({
 
             this.$http.get('http://localhost:8080/task/all').success(function(tasks) {
                 // if the request's response is not null
-                if (tasks != null) {
+                if (response != null && response.tasks != null) {
                     // set the tasks array equals to the 'tasks' property of the response
-                    this.$set('tasksContainer', tasks);
+                    this.$set('tasksContainer', response);
                 }
             }).error(function(error) {
                 console.log(error);
