@@ -138,8 +138,9 @@ func SelectAllTaskFromDb() ([]model.Task, error) {
 			var _id 	int
 			var _title 	string
 			var _notes 	string
+			var _done 	bool
 
-			err := row.Scan(&_id, &_title, &_notes)
+			err := row.Scan(&_id, &_title, &_notes, &_done)
 			if err != nil {
 				return tasks, err
 			}
@@ -147,6 +148,7 @@ func SelectAllTaskFromDb() ([]model.Task, error) {
 			_task.Id 	= strconv.Itoa(_id)
 			_task.Title = _title
 			_task.Notes = _notes
+			_task.Done 	= _done
 
 			tasks = append(tasks,_task)
 		}
@@ -173,16 +175,18 @@ func SelectTaskFromDb(id int) (model.Task, error){
 			var _id 	int
 			var _title 	string
 			var _notes 	string
+			var _done 	bool
 
-			err := row.Scan(&_id, &_title, &_notes)
+			err := row.Scan(&_id, &_title, &_notes, &_done)
 			if err != nil {
 				panic(err)
 				return task, err
 			}
 
 			task.Id 	= strconv.Itoa(_id)
-			task.Title = _title
-			task.Notes = _notes
+			task.Title 	= _title
+			task.Notes 	= _notes
+			task.Done	= _done
 
 		}
 
@@ -197,9 +201,10 @@ func InsertTaskToDb(task model.Task) (int,error) {
 
 	if database.IsConnectedToDb() {
 
-		query := "INSERT INTO task(title,notes) VALUES ("
+		query := "INSERT INTO task(title,notes,done) VALUES ("
 		query += "'" + task.Title + "',"
-		query += "'" + task.Notes + "') RETURNING id"
+		query += "'" + task.Notes + "',"
+		query += "'" + strconv.FormatBool(task.Done) + "') RETURNING id"
 
 		row, err := database.GetDb().Query(query)
 		if err != nil {
@@ -225,7 +230,8 @@ func UpdateTaskToDb(id string, task model.Task) error {
 //	query := "UPDATE task SET title='kasih makan sarapan si singo', notes='makanannya ada di atas kasur' WHERE id = 3"
 	query := "UPDATE task SET "
 	query += "title = '" + task.Title + "', "
-	query += "notes = '" + task.Notes + "' "
+	query += "notes = '" + task.Notes + "',"
+	query += "done = '" + strconv.FormatBool(task.Done) + "' "
 	query += "WHERE id = " + id
 
 	if database.IsConnectedToDb() {

@@ -45,7 +45,7 @@ func InitTables() bool{
 
 func CreateTaskTable() bool{
 	// create Task table
-	_, err = db.Exec("create table if not exists task(id SERIAL PRIMARY KEY, title varchar, notes varchar)")
+	_, err = db.Exec("create table if not exists task(id SERIAL PRIMARY KEY, title varchar, notes varchar, done  boolean)")
 	if err != nil {
 		panic(err)
 		return false
