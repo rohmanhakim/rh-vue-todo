@@ -11,6 +11,9 @@ var db 				*sql.DB
 var err 			error
 var isConnectedToDb bool
 
+//=================== TABLE NAME =====================
+var TABLE_TASKS = "tasks"
+
 func ConnectToDb() bool{
 	db, err = sql.Open("postgres", "user=" + dbUsername + " dbname=" + dbName + " sslmode=disable")
 	if err != nil {
@@ -36,16 +39,16 @@ func GetDb() *sql.DB{
 }
 
 func InitTables() bool{
-	if CreateTaskTable() == false {
+	if CreateTasksTable() == false {
 		return false
 	}
 
 	return true
 }
 
-func CreateTaskTable() bool{
-	// create Task table
-	_, err = db.Exec("create table if not exists task(id SERIAL PRIMARY KEY, title varchar, notes varchar, done  boolean)")
+func CreateTasksTable() bool{
+	// create Tasks table
+	_, err = db.Exec("create table if not exists " + TABLE_TASKS + "(id SERIAL PRIMARY KEY, title varchar, notes varchar, done  boolean)")
 	if err != nil {
 		panic(err)
 		return false

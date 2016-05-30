@@ -127,7 +127,9 @@ func SelectAllTaskFromDb() ([]model.Task, error) {
 
 	if database.IsConnectedToDb() {
 
-		row, err := database.GetDb().Query(`SELECT * FROM task`)
+		query := "SELECT * FROM " + database.TABLE_TASKS
+
+		row, err := database.GetDb().Query(query)
 		if err != nil {
 			panic(err)
 		}
@@ -160,7 +162,7 @@ func SelectTaskFromDb(id int) (model.Task, error){
 
 	var task model.Task
 
-	query := "SELECT * FROM task WHERE id = " + strconv.Itoa(id)
+	query := "SELECT * FROM " + database.TABLE_TASKS + " WHERE id = " + strconv.Itoa(id)
 
 	if database.IsConnectedToDb() {
 
@@ -201,7 +203,7 @@ func InsertTaskToDb(task model.Task) (int,error) {
 
 	if database.IsConnectedToDb() {
 
-		query := "INSERT INTO task(title,notes,done) VALUES ("
+		query := "INSERT INTO " + database.TABLE_TASKS + "(title,notes,done) VALUES ("
 		query += "'" + task.Title + "',"
 		query += "'" + task.Notes + "',"
 		query += "'" + strconv.FormatBool(task.Done) + "') RETURNING id"
@@ -227,8 +229,7 @@ func InsertTaskToDb(task model.Task) (int,error) {
 
 func UpdateTaskToDb(id string, task model.Task) error {
 
-//	query := "UPDATE task SET title='kasih makan sarapan si singo', notes='makanannya ada di atas kasur' WHERE id = 3"
-	query := "UPDATE task SET "
+	query := "UPDATE " + database.TABLE_TASKS + " SET "
 	query += "title = '" + task.Title + "', "
 	query += "notes = '" + task.Notes + "',"
 	query += "done = '" + strconv.FormatBool(task.Done) + "' "
@@ -248,7 +249,7 @@ func UpdateTaskToDb(id string, task model.Task) error {
 			return err
 		}
 
-		fmt.Printf("Success updating a task with id %s\n", id)
+		fmt.Printf("Success updating a task with id " + id)
 	}
 
 	return nil
@@ -256,7 +257,7 @@ func UpdateTaskToDb(id string, task model.Task) error {
 
 func DeleteTaskFromDb(id string) error {
 
-	query := "DELETE FROM task where id = "
+	query := "DELETE FROM " + database.TABLE_TASKS + " where id = "
 	query += id
 
 	if database.IsConnectedToDb() {
