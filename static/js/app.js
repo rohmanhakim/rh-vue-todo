@@ -33,7 +33,7 @@ Vue.component('edit-task-modal', {
     props: ['show', 'index','title','type','callback'],
     data: function() {
         return {
-            task: { id: '', title: '', notes: ''}
+            task: { id: '', title: '', notes: '', done: false}
         };
     },
     events: {
@@ -65,7 +65,7 @@ new Vue({
     //here we can register any values or collections that hold data
     // for the application
     data: {
-        task: { id: '', title: '', notes: '' },
+        task: { id: '', title: '', notes: '', done: false },
         tasksContainer: { tasks: [] }
     },
 
@@ -115,7 +115,7 @@ new Vue({
                     this.tasksContainer.tasks.push(this.task);
 
                     // set the task to empty
-                    this.task = { id: '', title: '', notes: '' };
+                    this.task = { id: '', title: '', notes: '', done: false };
 
                     console.log("Task added!");
                 }).error(function(error) {

@@ -88,13 +88,28 @@
     <div id="task-list" class="list-group">
         <div class="panel" v-for="task in tasksContainer.tasks">
             <a href="#btn-group-{{ $index }}"  data-parent="#task-list" data-toggle="collapse" aria-expanded="false" aria-controls="btn-group-{{ $index }}">
-                <h4 class="list-group-item-heading">
-                    {{ task.title }}
-                </h4>
+                <template v-if="task.done">
+                    <h4 class="list-group-item-heading">
+                        <s>
+                            {{ task.title }}
+                        </s>
+                    </h4>
 
-                <p class="list-group-item-text" v-if="task.notes">
-                    {{ task.notes }}
-                </p>
+                    <p class="list-group-item-text" v-if="task.notes">
+                        <s>
+                            {{ task.notes }}
+                        </s>
+                    </p>
+                </template>
+                <template v-else>
+                    <h4 class="list-group-item-heading">
+                        {{ task.title }}
+                    </h4>
+
+                    <p class="list-group-item-text" v-if="task.notes">
+                        {{ task.notes }}
+                    </p>
+                </template>
             </a>
             <div class="collapse" id="btn-group-{{ $index }}">
                 <br>
