@@ -34,7 +34,7 @@ func PostAddNewTaskHandler(rw http.ResponseWriter, req *http.Request, ren *rende
 	var id 						int
 	var err 					error
 	var task 					model.Task
-	var postAddNewTaskResponse 	model.PostAddNewTaskResponse
+	var response 	model.CommonWithIdResponse
 
 	err = json.NewDecoder(req.Body).Decode(&task)
 	if err != nil {
@@ -48,10 +48,10 @@ func PostAddNewTaskHandler(rw http.ResponseWriter, req *http.Request, ren *rende
 		helper.RenderErrorResponse(500,rw,ren)
 	}
 
-	postAddNewTaskResponse.Status = 200
-	postAddNewTaskResponse.Success = true
-	postAddNewTaskResponse.Id = strconv.Itoa(id)
-	ren.JSON(rw,http.StatusOK,postAddNewTaskResponse)
+	response.Status = 200
+	response.Success = true
+	response.Id = strconv.Itoa(id)
+	ren.JSON(rw,http.StatusOK,response)
 }
 
 func GetTaskDetailsHandler(rw http.ResponseWriter, req *http.Request, ren *render.Render){
