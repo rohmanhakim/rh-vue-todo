@@ -113,8 +113,11 @@
             </a>
             <div class="collapse" id="btn-group-{{ $index }}">
                 <br>
-                <button class="btn btn-xs btn-success">
-                    <span class="glyphicon glyphicon-ok"></span> Done
+                <button v-if="task.done" class="btn btn-xs btn-secondary" v-on:click="markTaskAsNotDone($index)">
+                    <span class="glyphicon glyphicon-repeat"></span> Undone
+                </button>
+                <button v-else class="btn btn-xs btn-success" v-on:click="markTaskAsDone($index)">
+                    <span class="glyphicon glyphicon-check"></span> Done
                 </button>
                 <button class="btn btn-xs btn-info" v-on:click="showEditTaskModal($index)">
                     <span class="glyphicon glyphicon-edit"></span> Edit

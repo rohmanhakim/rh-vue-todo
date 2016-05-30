@@ -143,10 +143,24 @@ new Vue({
             this.$http.put('http://localhost:8080/task/' + this.tasksContainer.tasks[index].id, task )
             .success( function(response) {
                 this.tasksContainer.tasks[index] = task;
+                return true;
             })
             .error( function(error) {
                console.log(error); 
+                return false;
             });
+        },
+        
+        markTaskAsDone: function(index) {
+            var t = this.tasksContainer.tasks[index];
+            t.done = true;
+            this.updateTask(index,t);
+        },
+        
+        markTaskAsNotDone: function(index) {
+            var t = this.tasksContainer.tasks[index];
+            t.done = false;
+            this.updateTask(index,t);
         },
 
         showDeleteTaskModal: function (index) {
