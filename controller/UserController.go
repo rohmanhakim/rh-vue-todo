@@ -16,7 +16,7 @@ func PostRegisterNewUser(rw http.ResponseWriter, req *http.Request, ren *render.
 	var id 						int
 	var err 					error
 	var user 					model.User
-	var postAddNewTaskResponse 	model.PostAddNewTaskResponse
+	var response 	model.CommonWithIdResponse
 
 	err = json.NewDecoder(req.Body).Decode(&user)
 	if err != nil {
@@ -30,10 +30,10 @@ func PostRegisterNewUser(rw http.ResponseWriter, req *http.Request, ren *render.
 		helper.RenderErrorResponse(500,rw,ren)
 	}
 
-	postAddNewTaskResponse.Status = 200
-	postAddNewTaskResponse.Success = true
-	postAddNewTaskResponse.Id = strconv.Itoa(id)
-	ren.JSON(rw,http.StatusOK,postAddNewTaskResponse)
+	response.Status = 200
+	response.Success = true
+	response.Id = strconv.Itoa(id)
+	ren.JSON(rw,http.StatusOK,response)
 }
 
 func SelectUserFromDb(id int) (model.Task, error){
