@@ -13,6 +13,7 @@ var isConnectedToDb bool
 
 //=================== TABLE NAME =====================
 var TABLE_TASKS = "tasks"
+var TABLE_USERS = "users"
 
 func ConnectToDb() bool{
 	db, err = sql.Open("postgres", "user=" + dbUsername + " dbname=" + dbName + " sslmode=disable")
@@ -43,12 +44,27 @@ func InitTables() bool{
 		return false
 	}
 
+	if CreateUsersTable() == false {
+		return false
+	}
+
 	return true
 }
 
 func CreateTasksTable() bool{
 	// create Tasks table
-	_, err = db.Exec("create table if not exists " + TABLE_TASKS + "(id SERIAL PRIMARY KEY, title varchar, notes varchar, done  boolean)")
+	_, err = db.Exec("create table if not exists " + TABLE_TASKS + "(id SERIAL PRIMARY KEY, title varchar(255), notes varchar(255), done  boolean)")
+	if err != nil {
+		panic(err)
+		return false
+	}
+
+	return true
+}
+
+func CreateUsersTable() bool{
+	//create Users table
+	_, err = db.Exec("create table if not exists " + TABLE_USERS + "(id SERIAL PRIMARY KEY, email varchar(50), password varchar(255))")
 	if err != nil {
 		panic(err)
 		return false
