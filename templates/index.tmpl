@@ -1,34 +1,67 @@
  <!-- add an task form -->
 <script src="/static/bootstrap/js/collapse.js"></script>
 
-<!-- template for task deletion modal dialog -->
-<template id="confirmation-modal-template">
+<template id="modal-template">
     <div class="modal-mask" v-show="show" transition="modal">
         <div class="modal-container">
-            <div>
-                <div class="modal-header">
-                    <h3 class="modal-title">{{ title }}</h3>
-                </div>
-
-                <div class="modal-body">
-                    <!-- Are you sure want to delete task number {{ index }}?-->
-                    {{ message }}
-                </div>
-
-                <div class="modal-footer text-right">
-                    <button class="btn btn-primary" v-on:click="onCancel()">
-                        Cancel
-                    </button>
-                    <button class="btn btn-{{ type }}" v-on:click="onConfirm(index)">
-                        Yes, I'm sure
-                    </button>
-                </div>
-            </div>
+            <slot></slot>
         </div>
     </div>
 </template>
 
+<!-- template for task deletion modal dialog -->
+<template id="confirmation-modal-template">
+    <modal v-show="show">
+        <div class="modal-header">
+            <h3 class="modal-title">{{ title }}</h3>
+        </div>
+
+        <div class="modal-body">
+            <!-- Are you sure want to delete task number {{ index }}?-->
+            {{ message }}
+        </div>
+
+        <div class="modal-footer text-right">
+            <button class="btn btn-secondary" v-on:click="onCancel()">
+                Cancel
+            </button>
+            <button class="btn btn-{{ type }}" v-on:click="onConfirm(index)">
+                Yes, I'm sure
+            </button>
+        </div>
+    </modal>
+</template>
+
+<!-- template for edit task modal dialog -->
+<template id="edit-task-modal-template">
+    <modal v-show="show">
+        <div class="modal-header">
+            <h3>{{ title }}</h3>
+        </div>
+
+        <div class="modal-body">
+            <div class="form-group">
+                <input class="form-control" placeholder="Task title" v-model="task.title" value="{{ task.title }}">
+            </div>
+
+            <div class="form-group">
+                <textarea class="form-control" placeholder="Task notes" v-model="task.notes" >{{ task.notes }}</textarea>
+            </div>
+        </div>
+
+        <div class="modal-footer text-right">
+            <button class="btn btn-secondary" v-on:click="onCancel()">
+                Cancel
+            </button>
+            <button class="btn btn-{{ type }}" v-on:click="onConfirm(index)">
+                Save
+            </button>
+        </div>
+    </modal>
+</template>
+
 <confirmation-modal></confirmation-modal>
+<edit-task-modal></edit-task-modal>
 
 <div class="col-sm-6">
     <div class="panel panel-default">
@@ -68,7 +101,7 @@
                 <button class="btn btn-xs btn-success">
                     <span class="glyphicon glyphicon-ok"></span> Done
                 </button>
-                <button class="btn btn-xs btn-info">
+                <button class="btn btn-xs btn-info" v-on:click="showEditTaskModal($index)">
                     <span class="glyphicon glyphicon-edit"></span> Edit
                 </button>
                 <button class="btn btn-xs btn-danger" v-on:click="showDeleteTaskModal($index)">
